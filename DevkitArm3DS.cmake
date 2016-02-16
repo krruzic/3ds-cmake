@@ -1,4 +1,4 @@
-set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_NAME 3DS-devkitARM)
 set(CMAKE_SYSTEM_PROCESSOR armv6k)
 set(3DS TRUE) # To be used for multiplatform projects
 
