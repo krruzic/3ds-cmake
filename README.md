@@ -61,6 +61,15 @@ CITRO3D's `_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUD
 
 If found, `SF2D_FOUND`, `LIBSF2D_LIBRARIES` and `LIBSF2D_INCLUDE_DIRS` will be set.
 
+## FindSFTD.cmake
+
+You can use `find_package(SFTD)`.
+Note, SFTD requires SF2D and the Freetype and ZLib portlibs, so will fail if
+`WITH_PORTLIBS` is OFF, it will call the relevant `find_package`s and append their
+`_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
+
+If found, `SFTD_FOUND`, `LIBSFTD_LIBRARIES` and `LIBSFTD_INCLUDE_DIRS` will be set.
+
 ## Tools3DS.cmake
 
 This file must be included with `include(Tools3DS)`. It provides several macros related to 3DS development such as `add_shader_library` which assembles your shaders into a C library.
