@@ -1,13 +1,13 @@
 # - Try to find citro3d
+# You can set CITRO3D_ROOT to specify a certain directory to look in first.
 # Once done this will define
 #  CITRO3D_FOUND - System has citro3d
 #  CITRO3D_INCLUDE_DIRS - The citro3d include directories
 #  CITRO3D_LIBRARIES - The libraries needed to use citro3d
 # Unless we are unable to find CTRULIB
 
-if(NOT DEVKITPRO)
-    include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
-    msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
+if(NOT 3DS)
+    message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
@@ -15,16 +15,32 @@ include(LibFindMacros)
 # citro3d requires ctrulib
 libfind_package(CITRO3D CTRULIB)
 
-# citro3d gets installed to ${DEVKITPRO}/libctru
-set(CITRO3D_PATHS $ENV{CITRO3D} ${DEVKITPRO}/libctru ${DEVKITPRO}/ctrulib)
+set(_CITRO3D_SEARCHES)
 
-find_path(CITRO3D_INCLUDE_DIR citro3d.h
-          PATHS ${CITRO3D_PATHS}
-          PATH_SUFFIXES include)
+# Search CITRO3D_ROOT first if it is set.
+if(CITRO3D_ROOT)
+  set(_CITRO3D_SEARCH_ROOT
+    PATHS ${CITRO3D_ROOT}
+    NO_DEFAULT_PATH
+    NO_CMAKE_FIND_ROOT_PATH)
+  list(APPEND _CITRO3D_SEARCHES _CITRO3D_SEARCH_ROOT)
+endif()
 
-find_library(CITRO3D_LIBRARY NAMES citro3d libcitro3d.a
-          PATHS ${CITRO3D_PATHS}
-          PATH_SUFFIXES lib)
+# Search below ${DEVKITPRO}, ${DEVKITARM} etc.
+set(_CITRO3D_SEARCH_NORMAL
+  PATHS / /citro3d /libctru /ctrulib
+  NO_DEFAULT_PATH
+  ONLY_CMAKE_FIND_ROOT_PATH)
+list(APPEND _CITRO3D_SEARCHES _CITRO3D_SEARCH_NORMAL)
+
+foreach(search ${_CITRO3D_SEARCHES})
+  find_path(CITRO3D_INCLUDE_DIR NAMES citro3d.h
+    ${${search}}
+    PATH_SUFFIXES include)
+  find_library(CITRO3D_LIBRARY NAMES citro3d libcitro3d.a
+    ${${search}}
+    PATH_SUFFIXES lib)
+endforeach()
 
 set(CITRO3D_PROCESS_INCLUDES CITRO3D_INCLUDE_DIR)
 set(CITRO3D_PROCESS_LIBS CITRO3D_LIBRARY)

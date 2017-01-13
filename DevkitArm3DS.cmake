@@ -6,7 +6,14 @@ set(3DS TRUE) # To be used for multiplatform projects
 set(CMAKE_SYSTEM_INCLUDE_PATH /include)
 set(CMAKE_SYSTEM_LIBRARY_PATH /lib)
 
-include("${CMAKE_CURRENT_LIST_DIR}/cmake/msys_to_cmake_path.cmake")
+# DevkitPro paths are broken on windows, so we have to fix those
+macro(msys_to_cmake_path MsysPath ResultingPath)
+  if(WIN32)
+    string(REGEX REPLACE "^/([a-zA-Z])/" "\\1:/" ${ResultingPath} "${MsysPath}")
+  else()
+    set(${ResultingPath} "${MsysPath}")
+  endif()
+endmacro()
 
 msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 if(NOT IS_DIRECTORY ${DEVKITPRO})

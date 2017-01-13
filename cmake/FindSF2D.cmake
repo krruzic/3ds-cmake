@@ -1,13 +1,13 @@
 # - Try to find sf2d
+# You can set SF2D_ROOT to specify a certain directory to look in first.
 # Once done this will define
 #  SF2D_FOUND - System has sf2d
 #  SF2D_INCLUDE_DIRS - The sf2d include directories
 #  SF2D_LIBRARIES - The libraries needed to use sf2d
 # Unless we are unable to find CITRO3D
 
-if(NOT DEVKITPRO)
-    include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
-    msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
+if(NOT 3DS)
+    message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
@@ -15,16 +15,32 @@ include(LibFindMacros)
 # sf2d requires citro3d
 libfind_package(SF2D CITRO3D)
 
-# sf2d gets installed to ${DEVKITPRO}/libctru
-set(SF2D_PATHS $ENV{SF2D} ${DEVKITPRO}/libctru ${DEVKITPRO}/ctrulib)
+set(_SF2D_SEARCHES)
 
-find_path(SF2D_INCLUDE_DIR sf2d.h
-          PATHS ${SF2D_PATHS}
-          PATH_SUFFIXES include)
+# Search SF2D_ROOT first if it is set.
+if(SF2D_ROOT)
+  set(_SF2D_SEARCH_ROOT
+    PATHS ${SF2D_ROOT}
+    NO_DEFAULT_PATH
+    NO_CMAKE_FIND_ROOT_PATH)
+  list(APPEND _SF2D_SEARCHES _SF2D_SEARCH_ROOT)
+endif()
 
-find_library(SF2D_LIBRARY NAMES sf2d libsf2d.a
-          PATHS ${SF2D_PATHS}
-          PATH_SUFFIXES lib)
+# Search below ${DEVKITPRO}, ${DEVKITARM} etc.
+set(_SF2D_SEARCH_NORMAL
+  PATHS / /libsf2d /sf2dlib /libctru /ctrulib
+  NO_DEFAULT_PATH
+  ONLY_CMAKE_FIND_ROOT_PATH)
+list(APPEND _SF2D_SEARCHES _SF2D_SEARCH_NORMAL)
+
+foreach(search ${_SF2D_SEARCHES})
+  find_path(SF2D_INCLUDE_DIR NAMES sf2d.h
+    ${${search}}
+    PATH_SUFFIXES include libsf2d/include)
+  find_library(SF2D_LIBRARY NAMES sf2d libsf2d.a
+    ${${search}}
+    PATH_SUFFIXES lib libsf2d/lib)
+endforeach()
 
 set(SF2D_PROCESS_INCLUDES SF2D_INCLUDE_DIR)
 set(SF2D_PROCESS_LIBS SF2D_LIBRARY)

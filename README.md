@@ -50,23 +50,27 @@ By default the portlibs folder will be used, it can be disabled by changing the 
 ## FindCTRULIB.cmake
 
 You can use `find_package(CTRULIB)`.  
+You can optionally set `CTRULIB_ROOT` before calling `find_package(CTRULIB)` to specify a directory to look in first.    
 If found, `CTRULIB_FOUND`, `CTRULIB_LIBRARIES` and `CTRULIB_INCLUDE_DIRS` will be set.
 
 ## FindCITRO3D.cmake
 
 You can use `find_package(CITRO3D)`.  
+You can optionally set `CITRO3D_ROOT` before calling `find_package(CITRO3D)` to specify a directory to look in first.  
 If found, `CITRO3D_FOUND`, `CITRO3D_LIBRARIES` and `CITRO3D_INCLUDE_DIRS` will be set.  
 Note, as CITRO3D depends on CTRULIB, if CTRULIB can't be found, the above won't be set.
 
 ## FindSF2D.cmake
 
 You can use `find_package(SF2D)`.  
+You can optionally set `SF2D_ROOT` before calling `find_package(SF2D)` to specify a directory to look in first.  
 If found, `SF2D_FOUND`, `SF2D_LIBRARIES` and `SF2D_INCLUDE_DIRS` will be set.  
 Note, as SF2D depends on CITRO3D, if CITRO3D can't be found, the above won't be set.
 
 ## FindSFTD.cmake
 
 You can use `find_package(SFTD)`.  
+You can optionally set `SFTD_ROOT` before calling `find_package(SFTD)` to specify a directory to look in first.  
 If found, `SFTD_FOUND`, `SFTD_LIBRARIES` and `SFTD_INCLUDE_DIRS` will be set.  
 Note, as SFTD depends on SF2D and the Freetype and ZLIB portlibs, if any of them
 can't be found, the above won't be set. As such, this will almost certainly fail
@@ -75,6 +79,7 @@ if `WITH_PORTLIBS` is set to OFF.
 ## FindSFIL.cmake
 
 You can use `find_package(SFIL)`.  
+You can optionally set `SFIL_ROOT` before calling `find_package(SFIL)` to specify a directory to look in first.  
 If found, `SFIL_FOUND`, `SFIL_LIBRARIES` and `SFIL_INCLUDE_DIRS` will be set.  
 Note, as SFIL depends on SF2D and the JPEG, PNG and ZLIB portlibs, if any of them
 can't be found, the above won't be set. As such, this will almost certainly fail

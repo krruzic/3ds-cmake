@@ -1,25 +1,42 @@
 # - Try to find ctrulib
+# You can set CTRULIB_ROOT to specify a certain directory to look in first.
 # Once done this will define
 #  CTRULIB_FOUND - System has ctrulib
 #  CTRULIB_INCLUDE_DIRS - The ctrulib include directories
 #  CTRULIB_LIBRARIES - The libraries needed to use ctrulib
 
-if(NOT DEVKITPRO)
-    include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
-    msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
+if(NOT 3DS)
+    message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
 
-set(CTRULIB_PATHS $ENV{CTRULIB} ${DEVKITPRO}/libctru ${DEVKITPRO}/ctrulib)
+set(_CTRULIB_SEARCHES)
 
-find_path(CTRULIB_INCLUDE_DIR 3ds.h
-          PATHS ${CTRULIB_PATHS}
-          PATH_SUFFIXES include)
+# Search CTRULIB_ROOT first if it is set.
+if(CTRULIB_ROOT)
+  set(_CTRULIB_SEARCH_ROOT
+    PATHS ${CTRULIB_ROOT}
+    NO_DEFAULT_PATH
+    NO_CMAKE_FIND_ROOT_PATH)
+  list(APPEND _CTRULIB_SEARCHES _CTRULIB_SEARCH_ROOT)
+endif()
 
-find_library(CTRULIB_LIBRARY NAMES ctru libctru.a
-          PATHS ${CTRULIB_PATHS}
-          PATH_SUFFIXES lib)
+# Search below ${DEVKITPRO}, ${DEVKITARM} etc.
+set(_CTRULIB_SEARCH_NORMAL
+  PATHS / /libctru /ctrulib
+  NO_DEFAULT_PATH
+  ONLY_CMAKE_FIND_ROOT_PATH)
+list(APPEND _CTRULIB_SEARCHES _CTRULIB_SEARCH_NORMAL)
+
+foreach(search ${_CTRULIB_SEARCHES})
+  find_path(CTRULIB_INCLUDE_DIR NAMES 3ds.h
+    ${${search}}
+    PATH_SUFFIXES include libctru/include)
+  find_library(CTRULIB_LIBRARY NAMES ctru libctru.a
+    ${${search}}
+    PATH_SUFFIXES lib libctru/lib)
+endforeach()
 
 set(CTRULIB_PROCESS_INCLUDES CTRULIB_INCLUDE_DIR)
 set(CTRULIB_PROCESS_LIBS CTRULIB_LIBRARY)
