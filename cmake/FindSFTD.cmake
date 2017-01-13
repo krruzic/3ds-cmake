@@ -4,7 +4,7 @@
 #  SFTD_FOUND - System has sftd
 #  SFTD_INCLUDE_DIRS - The sftd include directories
 #  SFTD_LIBRARIES - The libraries needed to use sftd
-# Unless we are unable to find ZLIB, FREETYPE or SF2D
+# Unless we are unable to find FREETYPE or SF2D
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
@@ -12,8 +12,7 @@ endif()
 
 include(LibFindMacros)
 
-# sftd requires zlib (because of freetype), freetype and sf2d
-libfind_package(SFTD ZLIB)
+# sftd requires freetype and sf2d
 libfind_package(SFTD FREETYPE)
 libfind_package(SFTD SF2D)
 
@@ -46,8 +45,5 @@ endforeach()
 
 set(SFTD_PROCESS_INCLUDES SFTD_INCLUDE_DIR)
 set(SFTD_PROCESS_LIBS SFTD_LIBRARY)
-
-set(FREETYPE_INCLUDE_OPTS FREETYPE_INCLUDE_DIR_freetype2)
-set(FREETYPE_LIBRARY_OPTS FREETYPE_LIBRARY)
 
 libfind_process(SFTD)

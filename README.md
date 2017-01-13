@@ -70,20 +70,61 @@ Note, as SF2D depends on CITRO3D, if CITRO3D can't be found, the above won't be 
 ## FindSFTD.cmake
 
 You can use `find_package(SFTD)`.  
-You can optionally set `SFTD_ROOT` before calling `find_package(SFTD)` to specify a directory to look in first.  
+You can optionally set `SFTD_ROOT` before calling `find_package(SFTD)` to specify
+a directory to look in first.  
 If found, `SFTD_FOUND`, `SFTD_LIBRARIES` and `SFTD_INCLUDE_DIRS` will be set.  
-Note, as SFTD depends on SF2D and the Freetype and ZLIB portlibs, if any of them
-can't be found, the above won't be set. As such, this will almost certainly fail
-if `WITH_PORTLIBS` is set to OFF.
+Note, as SFTD depends on SF2D and the Freetype and by extension the ZLIB portlibs,
+if any of them can't be found, the above won't be set. As such, this will most
+likely fail if `WITH_PORTLIBS` is set to OFF, unless you manually set
+`FREETYPE_ROOT` and `ZLIB_ROOT`.
 
 ## FindSFIL.cmake
 
 You can use `find_package(SFIL)`.  
-You can optionally set `SFIL_ROOT` before calling `find_package(SFIL)` to specify a directory to look in first.  
+You can optionally set `SFIL_ROOT` before calling `find_package(SFIL)` to specify
+a directory to look in first.  
 If found, `SFIL_FOUND`, `SFIL_LIBRARIES` and `SFIL_INCLUDE_DIRS` will be set.  
-Note, as SFIL depends on SF2D and the JPEG, PNG and ZLIB portlibs, if any of them
-can't be found, the above won't be set. As such, this will almost certainly fail
-if `WITH_PORTLIBS` is set to OFF.
+Note, as SFIL depends on SF2D and the JPEG, PNG and by extension the ZLIB portlibs,
+if any of them can't be found, the above won't be set. As such, this will most
+likely fail if `WITH_PORTLIBS` is set to OFF, unless you set `JPEG_ROOT`,
+`PNG_ROOT` and `ZLIB_ROOT`.
+
+## FindZLIB.cmake
+
+You can use `find_package(ZLIB)`.  
+You can optionally set `ZLIB_ROOT` before calling `find_package(ZLIB)` to specify
+a directory to look in first.  
+If found, `ZLIB_FOUND`, `ZLIB_LIBRARIES` and `ZLIB_INCLUDE_DIRS` will be set.  
+Note, as ZLIB is a portlib, this will most likely fail if `WITH_PORTLIBS` is set
+to OFF, unless you set `ZLIB_ROOT`.
+
+## FindPNG.cmake
+
+You can use `find_package(PNG)`.  
+You can optionally set `PNG_ROOT` before calling `find_package(PNG)` to specify
+a directory to look in first.  
+If found, `PNG_FOUND`, `PNG_LIBRARIES` and `PNG_INCLUDE_DIRS` will be set.  
+Note, as PNG is a portlib, and depends on ZLIB this will most likely fail if
+`WITH_PORTLIBS` is set to OFF, unless you set `PNG_ROOT` and `ZLIB_ROOT`.
+
+## FindJPEG.cmake
+
+You can use `find_package(JPEG)`.  
+You can optionally set `JPEG_ROOT` before calling `find_package(JPEG)` to specify
+a directory to look in first.  
+If found, `JPEG_FOUND`, `JPEG_LIBRARIES` and `JPEG_INCLUDE_DIRS` will be set.  
+Note, as JPEG is a portlib, this will most likely fail if `WITH_PORTLIBS` is set
+to OFF, unless you set `JPEG_ROOT`.
+
+## FindFreetype.cmake
+
+You can use `find_package(Freetype)`.  
+You can optionally set `FREETYPE_ROOT` before calling `find_package(Freetype)`
+to specify a directory to look in first.  
+If found, `FREETYPE_FOUND`, `FREETYPE_LIBRARIES` and `FREETYPE_INCLUDE_DIRS`
+will be set.  
+Note, as FREETYPE is a portlib, and depends on ZLIB this will most likely fail if
+`WITH_PORTLIBS` is set to OFF, unless you set `FREETYPE_ROOT` and `ZLIB_ROOT`.
 
 ## Tools3DS.cmake
 
