@@ -1,44 +1,32 @@
 # - Try to find sf2d
 # Once done this will define
-#  LIBSF2D_FOUND - System has sf2d
-#  LIBSF2D_INCLUDE_DIRS - The sf2d include directories
-#  LIBSF2D_LIBRARIES - The libraries needed to use sf2d
+#  SF2D_FOUND - System has sf2d
+#  SF2D_INCLUDE_DIRS - The sf2d include directories
+#  SF2D_LIBRARIES - The libraries needed to use sf2d
+# Unless we are unable to find CITRO3D
 
 if(NOT DEVKITPRO)
     include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
     msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 endif()
 
+include(LibFindMacros)
+
 # sf2d requires citro3d
-find_package(CITRO3D REQUIRED)
+libfind_package(SF2D CITRO3D)
 
-# sf2d gets installed to ${DEVKITPRO}/libctru so check the ${CTRULIB_PATHS} aswell
-set(SF2D_PATHS $ENV{SF2D} sf2dlib libsf2d ${CTRULIB_PATHS})
+# sf2d gets installed to ${DEVKITPRO}/libctru
+set(SF2D_PATHS $ENV{SF2D} ${DEVKITPRO}/libctru ${DEVKITPRO}/ctrulib)
 
-find_path(LIBSF2D_INCLUDE_DIR sf2d.h
+find_path(SF2D_INCLUDE_DIR sf2d.h
           PATHS ${SF2D_PATHS}
-          PATH_SUFFIXES include )
+          PATH_SUFFIXES include)
 
-find_library(LIBSF2D_LIBRARY NAMES sf2d libsf2d.a
+find_library(SF2D_LIBRARY NAMES sf2d libsf2d.a
           PATHS ${SF2D_PATHS}
           PATH_SUFFIXES lib)
 
-set(LIBSF2D_LIBRARIES ${LIBSF2D_LIBRARY} ${LIBCITRO3D_LIBRARIES} )
-set(LIBSF2D_INCLUDE_DIRS ${LIBSF2D_INCLUDE_DIR} ${LIBCITRO3D_INCLUDE_DIRS} )
+set(SF2D_PROCESS_INCLUDES SF2D_INCLUDE_DIR)
+set(SF2D_PROCESS_LIBS SF2D_LIBRARY)
 
-# remove duplicates from _LIBRARIES and _INCLUDE_DIRS
-list(REMOVE_DUPLICATES LIBSF2D_LIBRARIES)
-list(REMOVE_DUPLICATES LIBSF2D_INCLUDE_DIRS)
-
-include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set LIBSF2D_FOUND to TRUE
-# if all listed variables are TRUE
-find_package_handle_standard_args(SF2D  DEFAULT_MSG
-                                  LIBSF2D_LIBRARY LIBSF2D_INCLUDE_DIR
-                                  CITRO3D_FOUND)
-
-mark_as_advanced(LIBSF2D_INCLUDE_DIR LIBSF2D_LIBRARY )
-if(SF2D_FOUND)
-    set(SF2D ${LIBSF2D_INCLUDE_DIR}/..)
-    message(STATUS "setting SF2D to ${SF2D}")
-endif()
+libfind_process(SF2D)

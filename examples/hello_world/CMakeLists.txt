@@ -10,7 +10,7 @@ include(Tools3DS) # Include all the macros and tools needed for 3ds development.
 find_package(CTRULIB REQUIRED) # Look for ctrulib
 
 add_executable(hello_world source/main.c) # Create the elf file
-target_include_directories(hello_world PRIVATE ${LIBCTRU_INCLUDE_DIRS})
-target_link_libraries(hello_world ${LIBCTRU_LIBRARIES}) # Link ctrulib, this will also setup the include directories !
+target_include_directories(hello_world PRIVATE ${CTRULIB_INCLUDE_DIRS})
+target_link_libraries(hello_world ${CTRULIB_LIBRARIES}) # Link ctrulib, this will also setup the include directories !
 
 add_3dsx_target(hello_world) # Generate the .3dsx and .smdh from the hello_world target

@@ -1,7 +1,5 @@
 # 3ds-cmake
 
-
-
 CMake scripts for devkitArm and 3DS homebrew development.
 
 It aims to provide at least the same functionalities than devkitPro makefiles. It can help to build more complex projects or simply compile libraries by using the toolchain file.
@@ -41,43 +39,36 @@ By default the portlibs folder will be used, it can be disabled by changing the 
 
 ## FindCTRULIB.cmake
 
-You can use `find_package(CTRULIB)`.
-
-If found, `CTRULIB_FOUND`, `LIBCTRU_LIBRARIES` and `LIBCTRU_INCLUDE_DIRS` will be set.
+You can use `find_package(CTRULIB)`.  
+If found, `CTRULIB_FOUND`, `CTRULIB_LIBRARIES` and `CTRULIB_INCLUDE_DIRS` will be set.
 
 ## FindCITRO3D.cmake
 
-You can use `find_package(CITRO3D)`.
-Note, CITRO3D requires CTRULIB, so will call `find_package(CTRULIB)` and append
-CTRULIB's `_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
-
-If found, `CITRO3D_FOUND`, `LIBCITRO3D_LIBRARIES` and `LIBCITRO3D_INCLUDE_DIRS` will be set.
+You can use `find_package(CITRO3D)`.  
+If found, `CITRO3D_FOUND`, `CITRO3D_LIBRARIES` and `CITRO3D_INCLUDE_DIRS` will be set.  
+Note, as CITRO3D depends on CTRULIB, if CTRULIB can't be found, the above won't be set.
 
 ## FindSF2D.cmake
 
-You can use `find_package(SF2D)`.
-Note, SF2D requires CITRO3D, so will call `find_package(CITRO3D)` and append
-CITRO3D's `_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
-
-If found, `SF2D_FOUND`, `LIBSF2D_LIBRARIES` and `LIBSF2D_INCLUDE_DIRS` will be set.
+You can use `find_package(SF2D)`.  
+If found, `SF2D_FOUND`, `SF2D_LIBRARIES` and `SF2D_INCLUDE_DIRS` will be set.  
+Note, as SF2D depends on CITRO3D, if CITRO3D can't be found, the above won't be set.
 
 ## FindSFTD.cmake
 
-You can use `find_package(SFTD)`.
-Note, SFTD requires SF2D and the Freetype and ZLib portlibs, so will fail if
-`WITH_PORTLIBS` is OFF, it will call the relevant `find_package`s and append their
-`_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
-
-If found, `SFTD_FOUND`, `LIBSFTD_LIBRARIES` and `LIBSFTD_INCLUDE_DIRS` will be set.
+You can use `find_package(SFTD)`.  
+If found, `SFTD_FOUND`, `SFTD_LIBRARIES` and `SFTD_INCLUDE_DIRS` will be set.  
+Note, as SFTD depends on SF2D and the Freetype and ZLIB portlibs, if any of them
+can't be found, the above won't be set. As such, this will almost certainly fail
+if `WITH_PORTLIBS` is set to OFF.
 
 ## FindSFIL.cmake
 
-You can use `find_package(SFIL)`.
-Note, SFIL requires SF2D and the JPEG, PNG and ZLib portlibs, so will fail if
-`WITH_PORTLIBS` is OFF, it will call the relevant `find_package`s and append their
-`_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
-
-If found, `SFIL_FOUND`, `LIBSFIL_LIBRARIES` and `LIBSFIL_INCLUDE_DIRS` will be set.
+You can use `find_package(SFIL)`.  
+If found, `SFIL_FOUND`, `SFIL_LIBRARIES` and `SFIL_INCLUDE_DIRS` will be set.  
+Note, as SFIL depends on SF2D and the JPEG, PNG and ZLIP portlibs, if any of them
+can't be found, the above won't be set. As such, this will almost certainly fail
+if `WITH_PORTLIBS` is set to OFF.
 
 ## Tools3DS.cmake
 
@@ -180,8 +171,8 @@ file(GLOB_RECURSE SOURCE_FILES
     source/*
 )
 add_executable(hello_cmake ${SOURCE_FILES})
-target_include_directories(hello_cmake PRIVATE ${LIBCTRU_INCLUDE_DIRS})
-target_link_libraries(hello_cmake shaders ${LIBCTRU_LIBRARIES})
+target_include_directories(hello_cmake PRIVATE ${CTRULIB_INCLUDE_DIRS})
+target_link_libraries(hello_cmake shaders ${CTRULIB_LIBRARIES})
 
 add_3dsx_target(hello_cmake)
 ```

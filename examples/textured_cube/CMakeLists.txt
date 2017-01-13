@@ -22,8 +22,8 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 
 add_executable(textured_cube ${SOURCE_FILES}) # Create the elf file
-target_include_directories(textured_cube PRIVATE ${LIBCTRU_INCLUDE_DIRS})
-target_link_libraries(textured_cube shaders ${LIBCTRU_LIBRARIES} m) # Link the texture, shaders, ctrulib and libm. This will also add the include directories needed for ctrulib and the embedded files.
+target_include_directories(textured_cube PRIVATE ${CTRULIB_INCLUDE_DIRS})
+target_link_libraries(textured_cube shaders ${CTRULIB_LIBRARIES} m) # Link the texture, shaders, ctrulib and libm. This will also add the include directories needed for ctrulib and the embedded files.
 
 target_embed_file(textured_cube data/kitten.bin)# Embeds a file as a binary data array the same way devkitArm makefiles do.
 

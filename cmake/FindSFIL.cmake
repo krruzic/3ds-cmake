@@ -1,55 +1,43 @@
 # - Try to find sfil
 # Once done this will define
-#  LIBSFIL_FOUND - System has sfil
-#  LIBSFIL_INCLUDE_DIRS - The sfil include directories
-#  LIBSFIL_LIBRARIES - The libraries needed to use sfil
+#  SFIL_FOUND - System has sfil
+#  SFIL_INCLUDE_DIRS - The sfil include directories
+#  SFIL_LIBRARIES - The libraries needed to use sfil
+# Unless we are unable to find JPEG, ZLIB, PNG or SF2D
 
 if(NOT DEVKITPRO)
-    include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
+    include(msys_to_cmake_path)
     msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 endif()
 
-if(NOT WITH_PORTLIBS)
-    message(FATAL_ERROR "SFILLIB requires WITH_PORTLIBS to be enabled.")
-endif()
+include(LibFindMacros)
 
-# sfil requires jpeg
-find_package(JPEG REQUIRED)
+# sfil requires jpeg, zlib (because of png), png and sf2d
+libfind_package(SFIL JPEG)
+libfind_package(SFIL ZLIB)
+libfind_package(SFIL PNG)
+libfind_package(SFIL SF2D)
 
-# sfil requires png
-find_package(PNG REQUIRED)
+# sfil gets installed to ${DEVKITPRO}/libctru
+set(SFIL_PATHS $ENV{SFIL} ${DEVKITPRO}/libctru ${DEVKITPRO}/ctrulib)
 
-# sfil requires sf2d
-find_package(SF2D REQUIRED)
-
-# sfil gets installed to ${DEVKITPRO}/libctru so check the ${CTRULIB_PATHS} aswell
-set(SFIL_PATHS $ENV{SFIL} sfillib libsfil ${CTRULIB_PATHS})
-
-find_path(LIBSFIL_INCLUDE_DIR sfil.h
+find_path(SFIL_INCLUDE_DIR sfil.h
           PATHS ${SFIL_PATHS}
-          PATH_SUFFIXES include )
+          PATH_SUFFIXES include)
 
-find_library(LIBSFIL_LIBRARY NAMES sfil libsfil.a
+find_library(SFIL_LIBRARY NAMES sfil libsfil.a
           PATHS ${SFIL_PATHS}
           PATH_SUFFIXES lib)
 
-# png requires libm
-set(LIBSFIL_LIBRARIES ${LIBSFIL_LIBRARY} ${LIBSF2D_LIBRARIES} ${PNG_LIBRARIES} m ${JPEG_LIBRARIES} )
-set(LIBSFIL_INCLUDE_DIRS ${LIBSFIL_INCLUDE_DIR} ${LIBSF2D_INCLUDE_DIRS} ${PNG_INCLUDE_DIRS} ${JPEG_INCLUDE_DIRS} )
+set(SFIL_PROCESS_INCLUDES SFIL_INCLUDE_DIR)
+set(SFIL_PROCESS_LIBS SFIL_LIBRARY)
 
-# remove duplicates from _LIBRARIES and _INCLUDE_DIRS
-list(REMOVE_DUPLICATES LIBSFIL_LIBRARIES)
-list(REMOVE_DUPLICATES LIBSFIL_INCLUDE_DIRS)
+set(JPEG_INCLUDE_OPTS JPEG_INCLUDE_DIR)
+set(JPEG_LIBRARY_OPTS JPEG_LIBRARY)
 
-include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set LIBSFIL_FOUND to TRUE
-# if all listed variables are TRUE
-find_package_handle_standard_args(SFIL  DEFAULT_MSG
-                                  LIBSFIL_LIBRARY LIBSFIL_INCLUDE_DIR
-                                  SF2D_FOUND PNG_FOUND JPEG_FOUND)
+set(LIBM_LIBRARY m)
 
-mark_as_advanced(LIBSFIL_INCLUDE_DIR LIBSFIL_LIBRARY )
-if(SFIL_FOUND)
-    set(SFIL ${LIBSFIL_INCLUDE_DIR}/..)
-    message(STATUS "setting SFIL to ${SFIL}")
-endif()
+set(PNG_INCLUDE_OPTS PNG_INCLUDE_DIR)
+set(PNG_LIBRARY_OPTS PNG_LIBRARY LIBM_LIBRARY)
+
+libfind_process(SFIL)
