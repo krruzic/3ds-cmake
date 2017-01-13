@@ -110,7 +110,7 @@ For example, logo.bmp will generate the array `u8 logo_bmp[]` and its size `logo
 will also have access to a generated header file called `logo_bmp.h` which contains the declarations you need to use it.
 
     Note : All dots in the filename are converted to `_`, and if it starts with a number, `_` will be prepended.
-    For example 8x8.gas.tex would give the name _8x8_gas_tex.
+    For example `8x8.gas.tex` would give the name `_8x8_gas_tex`.
 
 ### target_embed_file(target input1 [input2 ...])
 
@@ -144,24 +144,26 @@ Same as add_shbin_library(tempbinlib input1 [input2 ...]) + target_link_librarie
 
 # Example of CMakeLists.txt using ctrulib and shaders
 
-    cmake_minimum_required(VERSION 2.8)
-    project(videoPlayer C CXX ASM)
+```cmake
+cmake_minimum_required(VERSION 2.8)
+project(videoPlayer C CXX ASM)
 
-    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
-    include(Tools3DS)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include(Tools3DS)
 
-    find_package(CTRULIB REQUIRED)
+find_package(CTRULIB REQUIRED)
 
-    file(GLOB_RECURSE SHADERS_FILES
-        data/*.pica
-    )
-    add_shbin_library(shaders ${SHADERS_FILES})
+file(GLOB_RECURSE SHADERS_FILES
+    data/*.pica
+)
+add_shbin_library(shaders ${SHADERS_FILES})
 
-    file(GLOB_RECURSE SOURCE_FILES
-        source/*
-    )
-    add_executable(hello_cmake ${SOURCE_FILES})
-    target_include_directories(hello_cmake PRIVATE ${LIBCTRU_INCLUDE_DIRS})
-    target_link_libraries(hello_cmake shaders ${LIBCTRU_LIBRARIES})
+file(GLOB_RECURSE SOURCE_FILES
+    source/*
+)
+add_executable(hello_cmake ${SOURCE_FILES})
+target_include_directories(hello_cmake PRIVATE ${LIBCTRU_INCLUDE_DIRS})
+target_link_libraries(hello_cmake shaders ${LIBCTRU_LIBRARIES})
 
-	add_3dsx_target(hello_cmake)
+add_3dsx_target(hello_cmake)
+```
