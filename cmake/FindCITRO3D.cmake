@@ -5,12 +5,18 @@
 #  CITRO3D_INCLUDE_DIRS - The citro3d include directories
 #  CITRO3D_LIBRARIES - The libraries needed to use citro3d
 # Unless we are unable to find CTRULIB
+# It also adds an imported target named `3ds::citro3d`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${CITRO3D_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${CITRO3D_INCLUDE_DIRS})
+# NOTE: You will have to additionally link against `3ds::ctrulib`.
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 # citro3d requires ctrulib
 libfind_package(CITRO3D CTRULIB)
@@ -46,3 +52,5 @@ set(CITRO3D_PROCESS_INCLUDES CITRO3D_INCLUDE_DIR)
 set(CITRO3D_PROCESS_LIBS CITRO3D_LIBRARY)
 
 libfind_process(CITRO3D)
+
+try_add_imported_target(CITRO3D)

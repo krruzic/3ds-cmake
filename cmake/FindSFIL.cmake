@@ -5,12 +5,20 @@
 #  SFIL_INCLUDE_DIRS - The sfil include directories
 #  SFIL_LIBRARIES - The libraries needed to use sfil
 # Unless we are unable to find JPEG, PNG or SF2D
+# It also adds an imported target named `3ds::sfil`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${SFIL_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${SFIL_INCLUDE_DIRS})
+# NOTE: You will have to additionally link against `3ds::png`, `m`, `3ds::zlib`,
+# `3ds::jpeg`, `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
+
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 # sfil requires jpeg, png and sf2d
 libfind_package(SFIL JPEG)
@@ -48,3 +56,5 @@ set(SFIL_PROCESS_INCLUDES SFIL_INCLUDE_DIR)
 set(SFIL_PROCESS_LIBS SFIL_LIBRARY)
 
 libfind_process(SFIL)
+
+try_add_imported_target(SFIL)

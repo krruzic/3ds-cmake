@@ -16,8 +16,7 @@ file(GLOB_RECURSE SOURCE_FILES
 )
 
 add_executable(simple_tri ${SOURCE_FILES}) # Create the elf file
-target_include_directories(simple_tri PRIVATE ${CTRULIB_INCLUDE_DIRS})
-target_link_libraries(simple_tri ${CTRULIB_LIBRARIES} m) # Link the shaders library, ctrulib and libm. This will also add the include directories for ctrulib.
+target_link_libraries(simple_tri 3ds::ctrulib m) # Link the shaders library, ctrulib and libm. This will also add the include directories for ctrulib.
 
 target_embed_shader(simple_tri source/vshader.pica) # creates the shbin files and embed them into the app
 

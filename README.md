@@ -63,7 +63,13 @@ You can use `find_package(CTRULIB)`.
 You can optionally set `CTRULIB_ROOT` before calling `find_package(CTRULIB)` to
 specify a directory to look in first.    
 If found, `CTRULIB_FOUND`, `CTRULIB_LIBRARIES` and `CTRULIB_INCLUDE_DIRS` will be
-set.
+set.  
+It also adds an imported target named `3ds::ctrulib`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${CTRULIB_LIBRARY})
+target_include_directories(mytarget PRIVATE ${CTRULIB_INCLUDE_DIRS})
+```
 
 ## FindCITRO3D.cmake
 
@@ -73,7 +79,14 @@ specify a directory to look in first.
 If found, `CITRO3D_FOUND`, `CITRO3D_LIBRARIES` and `CITRO3D_INCLUDE_DIRS` will be
 set.  
 Note, as CITRO3D depends on CTRULIB, if CTRULIB can't be found, the above won't
-be set.
+be set.  
+It also adds an imported target named `3ds::citro3d`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${CITRO3D_LIBRARY})
+target_include_directories(mytarget PRIVATE ${CITRO3D_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `3ds::ctrulib`.
 
 ## FindSF2D.cmake
 
@@ -82,7 +95,15 @@ You can optionally set `SF2D_ROOT` before calling `find_package(SF2D)` to specif
 a directory to look in first.  
 If found, `SF2D_FOUND`, `SF2D_LIBRARIES` and `SF2D_INCLUDE_DIRS` will be set.  
 Note, as SF2D depends on CITRO3D, if CITRO3D can't be found, the above won't be
-set.
+set.  
+It also adds an imported target named `3ds::sf2d`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${SF2D_LIBRARY})
+target_include_directories(mytarget PRIVATE ${SF2D_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `3ds::citro3d` and `3ds::ctrulib`.
+
 
 ## FindSFTD.cmake
 
@@ -93,7 +114,15 @@ If found, `SFTD_FOUND`, `SFTD_LIBRARIES` and `SFTD_INCLUDE_DIRS` will be set.
 Note, as SFTD depends on SF2D and the Freetype and by extension the ZLIB portlibs,
 if any of them can't be found, the above won't be set. As such, this will most
 likely fail if `WITH_PORTLIBS` is set to OFF, unless you manually set
-`FREETYPE_ROOT` and `ZLIB_ROOT`.
+`FREETYPE_ROOT` and `ZLIB_ROOT`.  
+It also adds an imported target named `3ds::sftd`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${SFTD_LIBRARY})
+target_include_directories(mytarget PRIVATE ${SFTD_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `3ds::freetype`, `3ds::zlib`,
+`3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
 
 ## FindSFIL.cmake
 
@@ -104,7 +133,16 @@ If found, `SFIL_FOUND`, `SFIL_LIBRARIES` and `SFIL_INCLUDE_DIRS` will be set.
 Note, as SFIL depends on SF2D and the JPEG, PNG and by extension the ZLIB portlibs,
 if any of them can't be found, the above won't be set. As such, this will most
 likely fail if `WITH_PORTLIBS` is set to OFF, unless you set `JPEG_ROOT`,
-`PNG_ROOT` and `ZLIB_ROOT`.
+`PNG_ROOT` and `ZLIB_ROOT`.  
+It also adds an imported target named `3ds::sfil`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${SFIL_LIBRARY})
+target_include_directories(mytarget PRIVATE ${SFIL_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `3ds::png`, `m`, `3ds::zlib`,
+`3ds::jpeg`, `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
+
 
 ## FindZLIB.cmake
 
@@ -113,7 +151,13 @@ You can optionally set `ZLIB_ROOT` before calling `find_package(ZLIB)` to specif
 a directory to look in first.  
 If found, `ZLIB_FOUND`, `ZLIB_LIBRARIES` and `ZLIB_INCLUDE_DIRS` will be set.  
 Note, as ZLIB is a portlib, this will most likely fail if `WITH_PORTLIBS` is set
-to OFF, unless you set `ZLIB_ROOT`.
+to OFF, unless you set `ZLIB_ROOT`.  
+It also adds an imported target named `3ds::zlib`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${ZLIB_LIBRARY})
+target_include_directories(mytarget PRIVATE ${ZLIB_INCLUDE_DIRS})
+```
 
 ## FindPNG.cmake
 
@@ -122,7 +166,14 @@ You can optionally set `PNG_ROOT` before calling `find_package(PNG)` to specify
 a directory to look in first.  
 If found, `PNG_FOUND`, `PNG_LIBRARIES` and `PNG_INCLUDE_DIRS` will be set.  
 Note, as PNG is a portlib, and depends on ZLIB this will most likely fail if
-`WITH_PORTLIBS` is set to OFF, unless you set `PNG_ROOT` and `ZLIB_ROOT`.
+`WITH_PORTLIBS` is set to OFF, unless you set `PNG_ROOT` and `ZLIB_ROOT`.  
+It also adds an imported target named `3ds::png`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${PNG_LIBRARY})
+target_include_directories(mytarget PRIVATE ${PNG_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `m` and `3ds::zlib`.
 
 ## FindJPEG.cmake
 
@@ -131,7 +182,13 @@ You can optionally set `JPEG_ROOT` before calling `find_package(JPEG)` to specif
 a directory to look in first.  
 If found, `JPEG_FOUND`, `JPEG_LIBRARIES` and `JPEG_INCLUDE_DIRS` will be set.  
 Note, as JPEG is a portlib, this will most likely fail if `WITH_PORTLIBS` is set
-to OFF, unless you set `JPEG_ROOT`.
+to OFF, unless you set `JPEG_ROOT`.  
+It also adds an imported target named `3ds::jpeg`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${JPEG_LIBRARY})
+target_include_directories(mytarget PRIVATE ${JPEG_INCLUDE_DIRS})
+```
 
 ## FindFreetype.cmake
 
@@ -141,7 +198,14 @@ to specify a directory to look in first.
 If found, `FREETYPE_FOUND`, `FREETYPE_LIBRARIES` and `FREETYPE_INCLUDE_DIRS`
 will be set.  
 Note, as FREETYPE is a portlib, and depends on ZLIB this will most likely fail if
-`WITH_PORTLIBS` is set to OFF, unless you set `FREETYPE_ROOT` and `ZLIB_ROOT`.
+`WITH_PORTLIBS` is set to OFF, unless you set `FREETYPE_ROOT` and `ZLIB_ROOT`.  
+It also adds an imported target named `3ds::freetype`, Linking against it is
+equivalent to:
+```cmake
+target_link_libraries(mytarget ${FREETYPE_LIBRARY})
+target_include_directories(mytarget PRIVATE ${FREETYPE_INCLUDE_DIRS})
+```
+NOTE: You will have to additionally link against `3ds::zlib`.
 
 ## Tools3DS.cmake
 
@@ -272,8 +336,7 @@ file(GLOB_RECURSE SOURCE_FILES
     source/*
 )
 add_executable(hello_cmake ${SOURCE_FILES})
-target_include_directories(hello_cmake PRIVATE ${CTRULIB_INCLUDE_DIRS})
-target_link_libraries(hello_cmake shaders ${CTRULIB_LIBRARIES})
+target_link_libraries(hello_cmake shaders 3ds::ctrulib)
 
 add_3dsx_target(hello_cmake)
 ```

@@ -4,12 +4,17 @@
 #  CTRULIB_FOUND - System has ctrulib
 #  CTRULIB_INCLUDE_DIRS - The ctrulib include directories
 #  CTRULIB_LIBRARIES - The libraries needed to use ctrulib
+# It also adds an imported target named `3ds::ctrulib`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${CTRULIB_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${CTRULIB_INCLUDE_DIRS})
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 set(_CTRULIB_SEARCHES)
 
@@ -43,7 +48,9 @@ set(CTRULIB_PROCESS_LIBS CTRULIB_LIBRARY)
 
 libfind_process(CTRULIB)
 
-if (CTRULIB_FOUND AND NOT DEFINED CTRULIB)
+try_add_imported_target(CTRULIB)
+
+if(CTRULIB_FOUND AND NOT DEFINED CTRULIB)
   set(CTRULIB ${CTRULIB_INCLUDE_DIR}/..)
   message(STATUS "Setting CTRULIB to ${CTRULIB}")
 endif()

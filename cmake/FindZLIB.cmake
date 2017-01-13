@@ -4,12 +4,17 @@
 #  ZLIB_FOUND - System has zlib
 #  ZLIB_INCLUDE_DIRS - The zlib include directories
 #  ZLIB_LIBRARIES - The libraries needed to use zlib
+# It also adds an imported target named `3ds::zlib`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${ZLIB_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${ZLIB_INCLUDE_DIRS})
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 set(_ZLIB_SEARCHES)
 
@@ -42,3 +47,5 @@ set(ZLIB_PROCESS_INCLUDES ZLIB_INCLUDE_DIR)
 set(ZLIB_PROCESS_LIBS ZLIB_LIBRARY)
 
 libfind_process(ZLIB)
+
+try_add_imported_target(ZLIB)

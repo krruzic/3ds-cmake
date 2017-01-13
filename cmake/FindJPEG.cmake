@@ -4,12 +4,17 @@
 #  JPEG_FOUND - System has jpeg
 #  JPEG_INCLUDE_DIRS - The jpeg include directories
 #  JPEG_LIBRARIES - The libraries needed to use jpeg
+# It also adds an imported target named `3ds::jpeg`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${JPEG_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${JPEG_INCLUDE_DIRS})
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 set(_JPEG_SEARCHES)
 
@@ -42,3 +47,5 @@ set(JPEG_PROCESS_INCLUDES JPEG_INCLUDE_DIR)
 set(JPEG_PROCESS_LIBS JPEG_LIBRARY)
 
 libfind_process(JPEG)
+
+try_add_imported_target(JPEG)

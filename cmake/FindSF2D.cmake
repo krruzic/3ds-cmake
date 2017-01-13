@@ -5,12 +5,18 @@
 #  SF2D_INCLUDE_DIRS - The sf2d include directories
 #  SF2D_LIBRARIES - The libraries needed to use sf2d
 # Unless we are unable to find CITRO3D
+# It also adds an imported target named `3ds::sf2d`, Linking against it is
+# equivalent to:
+# target_link_libraries(mytarget ${SF2D_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${SF2D_INCLUDE_DIRS})
+# NOTE: You will have to additionally link against `3ds::citro3d` and `3ds::ctrulib`.
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
 endif()
 
 include(LibFindMacros)
+include(try_add_imported_target)
 
 # sf2d requires citro3d
 libfind_package(SF2D CITRO3D)
@@ -46,3 +52,5 @@ set(SF2D_PROCESS_INCLUDES SF2D_INCLUDE_DIR)
 set(SF2D_PROCESS_LIBS SF2D_LIBRARY)
 
 libfind_process(SF2D)
+
+try_add_imported_target(SF2D)
