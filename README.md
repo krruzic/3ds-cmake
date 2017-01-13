@@ -43,13 +43,23 @@ By default the portlibs folder will be used, it can be disabled by changing the 
 
 You can use `find_package(CTRULIB)`.
 
-If found, `LIBCTRU_LIBRARIES` and `LIBCTRU_INCLUDE_DIRS` will be set.
+If found, `CTRULIB_FOUND`, `LIBCTRU_LIBRARIES` and `LIBCTRU_INCLUDE_DIRS` will be set.
+
+## FindCITRO3D.cmake
+
+You can use `find_package(CITRO3D)`.
+Note, CITRO3D requires CTRULIB, so will call `find_package(CTRULIB)` and append
+CTRULIB's `_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
+
+If found, `CITRO3D_FOUND`, `LIBCITRO3D_LIBRARIES` and `LIBCITRO3D_INCLUDE_DIRS` will be set.
 
 ## FindSF2D.cmake
 
 You can use `find_package(SF2D)`.
+Note, SF2D requires CITRO3D, so will call `find_package(CITRO3D)` and append
+CITRO3D's `_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
 
-If found, `LIBSF2D_LIBRARIES` and `LIBSF2D_INCLUDE_DIRS` will be set.
+If found, `SF2D_FOUND`, `LIBSF2D_LIBRARIES` and `LIBSF2D_INCLUDE_DIRS` will be set.
 
 ## Tools3DS.cmake
 
