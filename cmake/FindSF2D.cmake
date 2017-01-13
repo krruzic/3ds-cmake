@@ -3,10 +3,6 @@
 #  LIBSF2D_FOUND - System has sf2d
 #  LIBSF2D_INCLUDE_DIRS - The sf2d include directories
 #  LIBSF2D_LIBRARIES - The libraries needed to use sf2d
-#
-# It also adds an imported target named `3ds::sf2d`.
-# Linking it is the same as target_link_libraries(target ${LIBSF2D_LIBRARIES}) and target_include_directories(target ${LIBSF2D_INCLUDE_DIRS})
-
 
 # DevkitPro paths are broken on windows, so we have to fix those
 macro(msys_to_cmake_path MsysPath ResultingPath)
@@ -36,10 +32,4 @@ mark_as_advanced(LIBSF2D_INCLUDE_DIR LIBSF2D_LIBRARY )
 if(SF2D_FOUND)
     set(SF2D ${LIBSF2D_INCLUDE_DIR}/..)
     message(STATUS "setting SF2D to ${SF2D}")
-
-    add_library(3ds::sf2d STATIC IMPORTED GLOBAL)
-    set_target_properties(3ds::sf2d PROPERTIES
-        IMPORTED_LOCATION "${LIBSF2D_LIBRARY}"
-        INTERFACE_INCLUDE_DIRECTORIES "${LIBSF2D_INCLUDE_DIR}"
-    )
 endif()
