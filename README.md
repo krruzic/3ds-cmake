@@ -16,7 +16,7 @@ Then start cmake with
 If you are on windows, I suggest using the `Unix Makefiles` generator.
 
 `cmake-gui` is also a good alternative, you can specify the toolchain file the first time you configure a build.
-	
+
 You can use the macros and find scripts of the `cmake` folder by adding the following line to your CMakeLists.cmake :
 
     list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
@@ -44,8 +44,6 @@ By default the portlibs folder will be used, it can be disabled by changing the 
 You can use `find_package(CTRULIB)`.
 
 If found, `LIBCTRU_LIBRARIES` and `LIBCTRU_INCLUDE_DIRS` will be set.
-It also adds an imported target named `3ds::ctrulib`.
-Linking it is the same as target_link_libraries(target ${LIBCTRU_LIBRARIES}) and target_include_directories(target ${LIBCTRU_INCLUDE_DIRS})
 
 ## FindSF2D.cmake
 
@@ -100,10 +98,10 @@ Adds a target `name` that sends a .3dsx using the homebrew launcher netload syst
     /!\ Requires ASM to be enabled ( `enable_language(ASM)` or `project(yourprojectname C CXX ASM)`)
 
 Converts the files given as input to arrays of their binary data. This is useful to embed resources into your project.
-For example, logo.bmp will generate the array `u8 logo_bmp[]` and its size `logo_bmp_size`. By linking this library, you 
+For example, logo.bmp will generate the array `u8 logo_bmp[]` and its size `logo_bmp_size`. By linking this library, you
 will also have access to a generated header file called `logo_bmp.h` which contains the declarations you need to use it.
 
-    Note : All dots in the filename are converted to `_`, and if it starts with a number, `_` will be prepended. 
+    Note : All dots in the filename are converted to `_`, and if it starts with a number, `_` will be prepended.
     For example 8x8.gas.tex would give the name _8x8_gas_tex.
 
 ### target_embed_file(target input1 [input2 ...])
@@ -111,13 +109,13 @@ will also have access to a generated header file called `logo_bmp.h` which conta
 Same as add_binary_library(tempbinlib input1 [input2 ...]) + target_link_libraries(target tempbinlib)
 
 ### add_shbin(output input [entrypoint] [shader_type])
- 
+
 Assembles the shader given as `input` into the file `output`. No file extension is added.
 You can choose the shader assembler by setting SHADER_AS to `picasso` or `nihstro`.
 
 If `nihstro` is set as the assembler, entrypoint and shader_type will be used.
 - entrypoint is set to `main` by default
-- shader_type can be either VSHADER or GSHADER. By default it is VSHADER. 
+- shader_type can be either VSHADER or GSHADER. By default it is VSHADER.
 
 ### generate_shbins(input1 [input2 ...])
 
@@ -140,21 +138,22 @@ Same as add_shbin_library(tempbinlib input1 [input2 ...]) + target_link_librarie
 
     cmake_minimum_required(VERSION 2.8)
     project(videoPlayer C CXX ASM)
-    
+
     list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
     include(Tools3DS)
-    
+
     find_package(CTRULIB REQUIRED)
-    
+
     file(GLOB_RECURSE SHADERS_FILES
         data/*.pica
     )
     add_shbin_library(shaders ${SHADERS_FILES})
-    
+
     file(GLOB_RECURSE SOURCE_FILES
         source/*
     )
     add_executable(hello_cmake ${SOURCE_FILES})
-    target_link_libraries(hello_cmake shaders 3ds::ctrulib)
-	
+    target_include_directories(hello_cmake PRIVATE ${LIBCTRU_INCLUDE_DIRS})
+    target_link_libraries(hello_cmake shaders ${LIBCTRU_LIBRARIES})
+
 	add_3dsx_target(hello_cmake)
