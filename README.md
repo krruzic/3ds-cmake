@@ -70,6 +70,15 @@ Note, SFTD requires SF2D and the Freetype and ZLib portlibs, so will fail if
 
 If found, `SFTD_FOUND`, `LIBSFTD_LIBRARIES` and `LIBSFTD_INCLUDE_DIRS` will be set.
 
+## FindSFIL.cmake
+
+You can use `find_package(SFIL)`.
+Note, SFIL requires SF2D and the JPEG, PNG and ZLib portlibs, so will fail if
+`WITH_PORTLIBS` is OFF, it will call the relevant `find_package`s and append their
+`_LIBRARIES` and `_INCLUDE_DIRS` to it's own `_LIBRARIES` and `_INCLUDE_DIRS`.
+
+If found, `SFIL_FOUND`, `LIBSFIL_LIBRARIES` and `LIBSFIL_INCLUDE_DIRS` will be set.
+
 ## Tools3DS.cmake
 
 This file must be included with `include(Tools3DS)`. It provides several macros related to 3DS development such as `add_shader_library` which assembles your shaders into a C library.
