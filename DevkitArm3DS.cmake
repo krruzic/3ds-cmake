@@ -1,6 +1,10 @@
-set(CMAKE_SYSTEM_NAME Generic)
+set(CMAKE_SYSTEM_NAME 3DS-devkitARM)
+set(CMAKE_SYSTEM_VERSION 45)
 set(CMAKE_SYSTEM_PROCESSOR armv6k)
 set(3DS TRUE) # To be used for multiplatform projects
+
+set(CMAKE_SYSTEM_INCLUDE_PATH /include)
+set(CMAKE_SYSTEM_LIBRARY_PATH /lib)
 
 # DevkitPro Paths are broken on windows, so we have to fix those
 macro(msys_to_cmake_path MsysPath ResultingPath)
@@ -48,7 +52,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-SET(BUILD_SHARED_LIBS OFF CACHE INTERNAL "Shared libs not available" )
+# Technically, the 3DS does support it (CROs), but the toolchain doesn't.
+set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
 
 add_definitions(-DARM11 -D_3DS)
 
