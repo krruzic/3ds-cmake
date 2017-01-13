@@ -9,7 +9,15 @@ It aims to provide at least the same functionalities than devkitPro makefiles. I
 Simply copy `DevkitArm3DS.cmake` and the `cmake` folder at the root of your project (where your CMakeLists.txt is).
 Then start cmake with
 
-    cmake -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake
+```sh
+cmake -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake
+```
+
+Or, put the following at the top of your `CMakeLists.txt` file:
+
+```cmake
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_LIST_DIR}/DevkitArm3DS.cmake)
+```
 
 If you are on windows, I suggest using the `Unix Makefiles` generator.
 
@@ -17,7 +25,9 @@ If you are on windows, I suggest using the `Unix Makefiles` generator.
 
 You can use the macros and find scripts of the `cmake` folder by adding the following line to your CMakeLists.cmake :
 
-    list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+```cmake
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+```
 
 ## The toolchain file (DevkitArm3DS.cmake)
 
@@ -66,7 +76,7 @@ if `WITH_PORTLIBS` is set to OFF.
 
 You can use `find_package(SFIL)`.  
 If found, `SFIL_FOUND`, `SFIL_LIBRARIES` and `SFIL_INCLUDE_DIRS` will be set.  
-Note, as SFIL depends on SF2D and the JPEG, PNG and ZLIP portlibs, if any of them
+Note, as SFIL depends on SF2D and the JPEG, PNG and ZLIB portlibs, if any of them
 can't be found, the above won't be set. As such, this will almost certainly fail
 if `WITH_PORTLIBS` is set to OFF.
 
