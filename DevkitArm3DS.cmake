@@ -6,14 +6,7 @@ set(3DS TRUE) # To be used for multiplatform projects
 set(CMAKE_SYSTEM_INCLUDE_PATH /include)
 set(CMAKE_SYSTEM_LIBRARY_PATH /lib)
 
-# DevkitPro Paths are broken on windows, so we have to fix those
-macro(msys_to_cmake_path MsysPath ResultingPath)
-	if(WIN32)
-		string(REGEX REPLACE "^/([a-zA-Z])/" "\\1:/" ${ResultingPath} "${MsysPath}")
-	else()
-		set(${ResultingPath} "${MsysPath}")
-	endif()
-endmacro()
+include("${CMAKE_CURRENT_LIST_DIR}/cmake/msys_to_cmake_path.cmake")
 
 msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 if(NOT IS_DIRECTORY ${DEVKITPRO})
@@ -65,4 +58,3 @@ set(DKA_SUGGESTED_CXX_FLAGS "${DKA_SUGGESTED_C_FLAGS} -fno-rtti -fno-exceptions 
 
 set(CMAKE_INSTALL_PREFIX ${DEVKITPRO}/portlibs/3ds
     CACHE PATH "Install libraries in the portlibs dir")
-

@@ -4,12 +4,8 @@
 #  LIBSF2D_INCLUDE_DIRS - The sf2d include directories
 #  LIBSF2D_LIBRARIES - The libraries needed to use sf2d
 
-# DevkitPro paths are broken on windows, so we have to fix those
-macro(msys_to_cmake_path MsysPath ResultingPath)
-    string(REGEX REPLACE "^/([a-zA-Z])/" "\\1:/" ${ResultingPath} "${MsysPath}")
-endmacro()
-
 if(NOT DEVKITPRO)
+    include("${CMAKE_CURRENT_LIST_DIR}/msys_to_cmake_path.cmake")
     msys_to_cmake_path("$ENV{DEVKITPRO}" DEVKITPRO)
 endif()
 
