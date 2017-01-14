@@ -505,7 +505,7 @@ endmacro()
 # Get filename without shortest extension
 macro(get_filename_wse VAR FileName)
     get_filename_component(${VAR} "${FileName}" NAME)
-    string(REGEX REPLACE "\\.[^.]*$" ${VAR} "${${VAR}}")
+    string(REGEX REPLACE "\\.[^.]*$" "" ${VAR} "${${VAR}}")
 endmacro()
 
 function(generate_shbins)
