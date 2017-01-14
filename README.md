@@ -293,15 +293,19 @@ If `nihstro` is set as the assembler, entrypoint and shader_type will be used.
 Assemble all the shader files given as input into .shbin files. Those will be
 located in the folder `shaders` of the build directory.
 The names of the output files will be
-`<name of input without longest extension>.shbin`. `vshader.pica` will output
-`shader.shbin` but `shader.vertex.pica` will output `shader.shbin` too.
+`<name of input without shortest extension>.shbin`. `shader.pica` will output
+`shader.shbin` but `shader.vertex.pica` will output `shader.vertex.shbin`.
 
 ### add_shbin_library(target input1 [input2 ...])
 
 __/!\ Requires ASM to be enabled ( `enable_language(ASM)` or
 `project(yourprojectname C CXX ASM)`)__
 
-This is the same as calling generate_shbins and add_binary_library.
+This is the same as:
+```cmake
+generate_shbins(source/shader.vertex.pica)
+add_binary_library(target ${CMAKE_CURRENT_BINARY_DIR}/shaders/shader.vertex.shbin)
+```
 This is the function to be used to reproduce devkitArm makefiles behaviour.
 For example, add_shbin_library(shaders data/my1stshader.vsh.pica) will generate
 the target library `shaders` and you will be able to use the shbin in your

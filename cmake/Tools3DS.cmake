@@ -70,8 +70,10 @@
 # generate_shbins(input1 [input2 ...])
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 #
-# Assemble all the shader files given as input into .shbin files. Those will be located in the folder `shaders` of the build directory.
-# The names of the output files will be <name of input without longest extension>.shbin. vshader.pica will output shader.shbin but shader.vertex.pica will output shader.shbin too.
+# Assemble all the shader files given as input into .shbin files.
+# Those will be located in the folder `shaders` of the build directory.
+# The names of the output files will be <name of input without shortest extension>.shbin.
+# shader.pica will output shader.shbin but shader.vertex.pica will output shader.vertex.shbin.
 #
 # add_shbin_library(target input1 [input2 ...])
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -479,20 +481,26 @@ macro(add_shbin OUTPUT INPUT )
 
 endmacro()
 
+# Get filename without shortest extension
+macro(get_filename_wse VAR FileName)
+    get_filename_component(${VAR} "${FileName}" NAME)
+    string(REGEX REPLACE "\\.[^.]*$" ${VAR} "${${VAR}}")
+endmacro()
+
 function(generate_shbins)
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
     foreach(__shader_file ${ARGN})
-        get_filename_component(__shader_file_we ${__shader_file} NAME_WE)
+        get_filename_wse(__shader_file_we "${__shader_file}")
         #Generate the shbin file
-        list(APPEND __SHADERS_BIN_FILES ${CMAKE_CURRENT_BINARY_DIR}/shaders/${__shader_file_we}.shbin)
         add_shbin(${CMAKE_CURRENT_BINARY_DIR}/shaders/${__shader_file_we}.shbin ${__shader_file})
     endforeach()
 endfunction()
 
 function(add_shbin_library libtarget)
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+    set(__SHADERS_BIN_FILES)
     foreach(__shader_file ${ARGN})
-        get_filename_component(__shader_file_we ${__shader_file} NAME_WE)
+        get_filename_wse(__shader_file_we "${__shader_file}")
         #Generate the shbin file
         list(APPEND __SHADERS_BIN_FILES ${CMAKE_CURRENT_BINARY_DIR}/shaders/${__shader_file_we}.shbin)
         add_shbin(${CMAKE_CURRENT_BINARY_DIR}/shaders/${__shader_file_we}.shbin ${__shader_file})
