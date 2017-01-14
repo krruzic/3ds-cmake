@@ -51,6 +51,6 @@ libfind_process(CTRULIB)
 try_add_imported_target(CTRULIB)
 
 if(CTRULIB_FOUND AND NOT DEFINED CTRULIB)
-  set(CTRULIB ${CTRULIB_INCLUDE_DIR}/..)
+  get_filename_component(CTRULIB ${CTRULIB_INCLUDE_DIR} DIRECTORY)
   message(STATUS "Setting CTRULIB to ${CTRULIB}")
 endif()
