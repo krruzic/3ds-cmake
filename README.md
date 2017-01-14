@@ -247,7 +247,7 @@ Same as add_3dsx_target but for CIA files.
 * IMAGE is either a .png or a cgfximage file.
 * SOUND is either a .wav or a cwavaudio file.
 
-### add_netload_target(target FILE)
+### add_netload_target(name target_or_file)
 
 Adds a target `name` that sends a .3dsx using the homebrew launcher netload
 system (3dslink).
@@ -272,7 +272,7 @@ For example `8x8.gas.tex` would give the name `_8x8_gas_tex`.
 
 ### target_embed_file(target input1 [input2 ...])
 
-Same as:
+This is the same as:
 ```cmake
 add_binary_library(tempbinlib input1 [input2 ...])
 target_link_libraries(target tempbinlib)
@@ -314,7 +314,7 @@ program by linking it, including `my1stshader_pica.h` and using
 
 ### target_embed_shader(target input1 [input2 ...])
 
-Same as:
+This is the same as:
 ```cmake
 add_shbin_library(tempbinlib input1 [input2 ...])
 target_link_libraries(target tempbinlib)

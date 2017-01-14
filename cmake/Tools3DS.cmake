@@ -8,7 +8,8 @@
 #
 # ## add_3dsx_target(target [NO_SMDH])
 #
-# Adds a target that generates a .3dsx file from `target`. If NO_SMDH is specified, no .smdh file will be generated.
+# Adds a target that generates a .3dsx file from `target`. If NO_SMDH is specified,
+# no .smdh file will be generated.
 #
 # You can set the following variables to change the SMDH file :
 #
@@ -23,71 +24,91 @@
 #
 # ## add_3dsx_target(target APP_TITLE APP_DESCRIPTION APP_AUTHOR [APP_ICON])
 #
-# This version will produce the SMDH with tha values passed as arguments. Tha APP_ICON is optional and follows the same rule as the other version of `add_3dsx_target`.
+# This version will produce the SMDH with the values passed as arguments.
+# The APP_ICON is optional and follows the same rule as the other version of
+# `add_3dsx_target`.
 #
 # add_cia_target(target RSF IMAGE SOUND [APP_TITLE APP_DESCRIPTION APP_AUTHOR [APP_ICON]])
 # ^^^^^^^^^^^^^^
 #
 # Same as add_3dsx_target but for CIA files.
 #
-# RSF is the .rsf file to be given to makerom.
-# IMAGE is either a .png or a cgfximage file.
-# SOUND is either a .wav or a cwavaudio file.
+# * RSF is the .rsf file to be given to makerom.
+# * IMAGE is either a .png or a cgfximage file.
+# * SOUND is either a .wav or a cwavaudio file.
 #
 # add_netload_target(name target_or_file)
 # ^^^^^^^^^^^^^^^^^^
 #
-# Adds a target `name` that sends a .3dsx using the homebrew launcher netload system (3dslink).
-# target_or_file is either the name of a target or of file.
+# Adds a target `name` that sends a .3dsx using the homebrew launcher netload
+# system (3dslink).
+# * `target_or_file` is either the name of a target (on which you used
+#   add_3dsx_target) or a file name.
 #
 # add_binary_library(target input1 [input2 ...])
 # ^^^^^^^^^^^^^^^^^^
 #
-#    /!\ Requires ASM to be enabled ( `enable_language(ASM)` or `project(yourprojectname C CXX ASM)`)
+# /!\ Requires ASM to be enabled ( `enable_language(ASM)` or `project(yourprojectname C CXX ASM)`)
 #
-# Converts the files given as input to arrays of their binary data. This is useful to embed resources into your project.
-# For example, logo.bmp will generate the array `u8 logo_bmp[]` and its size `logo_bmp_size`. By linking this library, you
-# will also have access to a generated header file called `logo_bmp.h` which contains the declarations you need to use it.
+# Converts the files given as input to arrays of their binary data. This is useful
+# to embed resources into your project.
+# For example, logo.bmp will generate the array `u8 logo_bmp[]` and its size
+# `logo_bmp_size`. By linking this library, you will also have access to a
+# generated header file called `logo_bmp.h` which contains the declarations you
+# need to use it.
 #
-#   Note : All dots in the filename are converted to `_`, and if it starts with a number, `_` will be prepended.
-#   For example 8x8.gas.tex would give the name _8x8_gas_tex.
+# Note : All dots in the filename are converted to `_`, and if it starts with a
+# number, `_` will be prepended.
+# For example `8x8.gas.tex` would give the name `_8x8_gas_tex`.
 #
 # target_embed_file(target input1 [input2 ...])
 # ^^^^^^^^^^^^^^^^^
 #
-# Same as add_binary_library(tempbinlib input1 [input2 ...]) + target_link_libraries(target tempbinlib)
+# This is the same as:
+# add_binary_library(tempbinlib input1 [input2 ...])
+# target_link_libraries(target tempbinlib)
 #
 # add_shbin(output input [entrypoint] [shader_type])
-# ^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^
 #
-# Assembles the shader given as `input` into the file `output`. No file extension is added.
+# Assembles the shader given as `input` into the file `output`. No file extension
+# is added.
 # You can choose the shader assembler by setting SHADER_AS to `picasso` or `nihstro`.
 #
 # If `nihstro` is set as the assembler, entrypoint and shader_type will be used.
-# entrypoint is set to `main` by default
-# shader_type can be either VSHADER or GSHADER. By default it is VSHADER.
+# - entrypoint is set to `main` by default
+# - shader_type can be either VSHADER or GSHADER. By default it is VSHADER.
 #
 # generate_shbins(input1 [input2 ...])
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# ^^^^^^^^^^^^^^^
 #
-# Assemble all the shader files given as input into .shbin files.
-# Those will be located in the folder `shaders` of the build directory.
-# The names of the output files will be <name of input without shortest extension>.shbin.
-# shader.pica will output shader.shbin but shader.vertex.pica will output shader.vertex.shbin.
+# Assemble all the shader files given as input into .shbin files. Those will be
+# located in the folder `shaders` of the build directory.
+# The names of the output files will be
+# `<name of input without shortest extension>.shbin`. `shader.pica` will output
+# `shader.shbin` but `shader.vertex.pica` will output `shader.vertex.shbin`.
 #
 # add_shbin_library(target input1 [input2 ...])
-# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-#
-#    /!\ Requires ASM to be enabled ( `enable_language(ASM)` or `project(yourprojectname C CXX ASM)`)
-#
-# This is the same as calling generate_shbins and add_binary_library. This is the function to be used to reproduce devkitArm makefiles behaviour.
-# For example, add_shbin_library(shaders data/my1stshader.vsh.pica) will generate the target library `shaders` and you
-# will be able to use the shbin in your program by linking it, including `my1stshader_pica.h` and using `my1stshader_pica[]` and `my1stshader_pica_size`.
-#
-# target_embed_shader(target input1 [input2 ...])
 # ^^^^^^^^^^^^^^^^^
 #
-# Same as add_shbin_library(tempbinlib input1 [input2 ...]) + target_link_libraries(target tempbinlib)
+# /!\ Requires ASM to be enabled ( `enable_language(ASM)` or `project(yourprojectname C CXX ASM)`)
+#
+# This is the same as:
+# generate_shbins(source/shader.vertex.pica)
+# add_binary_library(target ${CMAKE_CURRENT_BINARY_DIR}/shaders/shader.vertex.shbin)
+#
+# This is the function to be used to reproduce devkitArm makefiles behaviour.
+# For example, add_shbin_library(shaders data/my1stshader.vsh.pica) will generate
+# the target library `shaders` and you will be able to use the shbin in your
+# program by linking it, including `my1stshader_pica.h` and using
+# `my1stshader_pica[]` and `my1stshader_pica_size`.
+#
+# target_embed_shader(target input1 [input2 ...])
+# ^^^^^^^^^^^^^^^^^^^
+#
+# This is the same as:
+# add_shbin_library(tempbinlib input1 [input2 ...])
+# target_link_libraries(target tempbinlib)
 #
 ############################################################################
 
