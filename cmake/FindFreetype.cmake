@@ -1,14 +1,14 @@
 # - Try to find freetype
-# You can set FREETYPE_ROOT to specify a certain directory to look in first.
+# You can set Freetype_ROOT to specify a certain directory to look in first.
 # Once done this will define
-#  FREETYPE_FOUND - System has freetype
-#  FREETYPE_INCLUDE_DIRS - The freetype include directories
-#  FREETYPE_LIBRARIES - The libraries needed to use freetype
+#  Freetype_FOUND - System has freetype
+#  Freetype_INCLUDE_DIRS - The freetype include directories
+#  Freetype_LIBRARIES - The libraries needed to use freetype
 # Unless we are unable to find ZLIB
 # It also adds an imported target named `3ds::freetype`, Linking against it is
 # equivalent to:
-# target_link_libraries(mytarget ${FREETYPE_LIBRARY})
-# target_include_directories(mytarget PRIVATE ${FREETYPE_INCLUDE_DIRS})
+# target_link_libraries(mytarget ${Freetype_LIBRARY})
+# target_include_directories(mytarget PRIVATE ${Freetype_INCLUDE_DIRS})
 # NOTE: You will have to additionally link against `3ds::zlib`.
 
 if(NOT 3DS)
@@ -18,38 +18,38 @@ endif()
 include(LibFindMacros)
 include(try_add_imported_target)
 
-libfind_package(FREETYPE ZLIB)
+libfind_package(Freetype ZLIB)
 
-set(_FREETYPE_SEARCHES)
+set(_Freetype_SEARCHES)
 
-# Search FREETYPE_ROOT first if it is set.
-if(FREETYPE_ROOT)
-  set(_FREETYPE_SEARCH_ROOT
-    PATHS ${FREETYPE_ROOT}
+# Search Freetype_ROOT first if it is set.
+if(Freetype_ROOT)
+  set(_Freetype_SEARCH_ROOT
+    PATHS ${Freetype_ROOT}
     NO_DEFAULT_PATH
     NO_CMAKE_FIND_ROOT_PATH)
-  list(APPEND _FREETYPE_SEARCHES _FREETYPE_SEARCH_ROOT)
+  list(APPEND _Freetype_SEARCHES _Freetype_SEARCH_ROOT)
 endif()
 
 # Search below ${DEVKITPRO}, ${DEVKITARM}, portlibs (if enabled) etc.
-set(_FREETYPE_SEARCH_NORMAL
+set(_Freetype_SEARCH_NORMAL
   PATHS /
   NO_DEFAULT_PATH
   ONLY_CMAKE_FIND_ROOT_PATH)
-list(APPEND _FREETYPE_SEARCHES _FREETYPE_SEARCH_NORMAL)
+list(APPEND _Freetype_SEARCHES _Freetype_SEARCH_NORMAL)
 
-foreach(search ${_FREETYPE_SEARCHES})
-  find_path(FREETYPE_INCLUDE_DIR NAMES freetype/config/ftheader.h config/ftheader.h
+foreach(search ${_Freetype_SEARCHES})
+  find_path(Freetype_INCLUDE_DIR NAMES freetype/config/ftheader.h config/ftheader.h
     ${${search}}
     PATH_SUFFIXES include/freetype2 include freetype2)
-  find_library(FREETYPE_LIBRARY NAMES freetype libfreetype.a
+  find_library(Freetype_LIBRARY NAMES freetype libfreetype.a
     ${${search}}
     PATH_SUFFIXES lib)
 endforeach()
 
-set(FREETYPE_PROCESS_INCLUDES FREETYPE_INCLUDE_DIR)
-set(FREETYPE_PROCESS_LIBS FREETYPE_LIBRARY)
+set(Freetype_PROCESS_INCLUDES Freetype_INCLUDE_DIR)
+set(Freetype_PROCESS_LIBS Freetype_LIBRARY)
 
-libfind_process(FREETYPE)
+libfind_process(Freetype)
 
-try_add_imported_target(FREETYPE)
+try_add_imported_target(Freetype)

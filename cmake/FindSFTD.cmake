@@ -21,7 +21,7 @@ include(LibFindMacros)
 include(try_add_imported_target)
 
 # sftd requires freetype and sf2d
-libfind_package(SFTD FREETYPE)
+libfind_package(SFTD Freetype)
 libfind_package(SFTD SF2D)
 
 set(_SFTD_SEARCHES)

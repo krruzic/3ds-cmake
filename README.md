@@ -350,21 +350,21 @@ Examples of linking against JPEG:
 
 ## FindFreetype.cmake
 ```cmake
-find_package(FREETYPE [REQUIRED])
+find_package(Freetype [REQUIRED])
 ```
 You can optionally set the following before calling `find_package`:
-  * `FREETYPE_ROOT` - the root directory of your Freetype install.
+  * `Freetype_ROOT` - the root directory of your Freetype install.
 
 As this is a portlib, this is almost certainly fail to find Freetype if `WITH_PORTLIBS`
-is set to OFF, unless you set `FREETYPE_ROOT`.
+is set to OFF, unless you set `Freetype_ROOT`.
 
 PNG also depends on the following being found:
   * [ZLIB](#findzlib-cmake)
 
 If Freetype is found it will set the following:
-  * `FREETYPE_FOUND`
-  * `FREETYPE_LIBRARIES` - the necessary libraries to link against to use Freetype (including ZLIB).
-  * `FREETYPE_INCLUDE_DIRS` - the necessary include directories to use Freetype (including ZLIB).
+  * `Freetype_FOUND`
+  * `Freetype_LIBRARIES` - the necessary libraries to link against to use Freetype (including ZLIB).
+  * `Freetype_INCLUDE_DIRS` - the necessary include directories to use Freetype (including ZLIB).
   * It will also add an imported target named `3ds::freetype`.
     + A caveat of imported targets is that you will have to also link against
     `3ds::zlib`.
@@ -373,16 +373,16 @@ Examples of linking against Freetype:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
 
   ```cmake
-  find_package(FREETYPE REQUIRED)
+  find_package(Freetype REQUIRED)
 
-  target_link_libraries(mytarget ${FREETYPE_LIBRARIES})
-  target_include_directories(mytarget PRIVATE ${FREETYPE_INCLUDE_DIRS})
+  target_link_libraries(mytarget ${Freetype_LIBRARIES})
+  target_include_directories(mytarget PRIVATE ${Freetype_INCLUDE_DIRS})
   ```
 
   * Using the imported target:
 
   ```cmake
-  find_package(FREETYPE REQUIRED)
+  find_package(Freetype REQUIRED)
 
   target_link_libraries(mytarget 3ds::freetype 3ds::zlib)
   ```
