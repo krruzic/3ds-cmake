@@ -57,8 +57,8 @@ set_property(GLOBAL PROPERTY TARGET_SUPPORTS_SHARED_LIBS FALSE)
 
 add_definitions(-DARM11 -D_3DS)
 
-set(ARCH "-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft ")
-set(CMAKE_C_FLAGS " -mword-relocations ${ARCH}" CACHE STRING "C flags")
+set(ARCH "-march=armv6k -mtune=mpcore -mfloat-abi=hard -mtp=soft")
+set(CMAKE_C_FLAGS "-mword-relocations ${ARCH}" CACHE STRING "C flags")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "C++ flags")
 set(DKA_SUGGESTED_C_FLAGS "-fomit-frame-pointer")
 set(DKA_SUGGESTED_CXX_FLAGS "${DKA_SUGGESTED_C_FLAGS} -fno-rtti -fno-exceptions -std=gnu++11")
