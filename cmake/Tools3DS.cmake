@@ -432,8 +432,9 @@ macro(add_binary_library libtarget)
 
     foreach(__file ${ARGN})
         get_filename_component(__file_wd ${__file} NAME)
-        string(REGEX REPLACE "^([0-9])" "_\\1" __BIN_FILE_NAME ${__file_wd}) # add '_' if the file name starts by a number
-        string(REGEX REPLACE "[-./]" "_" __BIN_FILE_NAME ${__BIN_FILE_NAME})
+        string(REGEX REPLACE "[^A-Za-z0-9_./-]" "" __BIN_FILE_NAME ${__file_wd})
+        string(REGEX REPLACE "[./-]" "_" __BIN_FILE_NAME ${__BIN_FILE_NAME})
+        string(REGEX REPLACE "^([0-9])" "_\\1" __BIN_FILE_NAME ${__BIN_FILE_NAME}) # add '_' if the file name starts by a number
 
         #Generate the header file
         configure_file(${__tools3dsdir}/bin2s_header.h.in ${CMAKE_CURRENT_BINARY_DIR}/${libtarget}_include/${__BIN_FILE_NAME}.h)
