@@ -37,6 +37,11 @@
 # * IMAGE is either a .png or a cgfximage file.
 # * SOUND is either a .wav or a cwavaudio file.
 #
+# add_cci_target(target RSF IMAGE SOUND [APP_TITLE APP_DESCRIPTION APP_AUTHOR [APP_ICON]])
+# ^^^^^^^^^^^^^^
+#
+# Same as add_cia_target but for CCI files.
+#
 # add_netload_target(name target_or_file)
 # ^^^^^^^^^^^^^^^^^^
 #
@@ -396,6 +401,59 @@ function(add_cia_target target RSF IMAGE SOUND )
     )
 
     add_custom_target(${target_we}_cia ALL SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.cia)
+    set_target_properties(${target} PROPERTIES LINK_FLAGS "-specs=3dsx.specs")
+endfunction()
+
+function(add_cci_target target RSF IMAGE SOUND )
+    get_filename_component(target_we ${target} NAME_WE)
+    if(${ARGC} GREATER 6)
+        set(APP_TITLE ${ARGV4})
+        set(APP_DESCRIPTION ${ARGV5})
+        set(APP_AUTHOR ${ARGV6})
+    endif()
+    if(${ARGC} EQUAL 8)
+        set(APP_ICON ${ARGV7})
+    endif()
+    if(NOT APP_TITLE)
+        set(APP_TITLE ${target})
+    endif()
+    if(NOT APP_DESCRIPTION)
+        set(APP_DESCRIPTION "Built with devkitARM & libctru")
+    endif()
+    if(NOT APP_AUTHOR)
+        set(APP_AUTHOR "Unspecified Author")
+    endif()
+    if(NOT APP_ICON)
+        if(EXISTS ${target}.png)
+            set(APP_ICON ${target}.png)
+        elseif(EXISTS icon.png)
+            set(APP_ICON icon.png)
+        elseif(CTRULIB)
+            set(APP_ICON ${CTRULIB}/default_icon.png)
+        else()
+            message(FATAL_ERROR "No icon found ! Please use NO_SMDH or provide some icon.")
+        endif()
+    endif()
+    if( NOT ${target_we}.smdh)
+        __add_smdh(${target_we}.smdh ${APP_TITLE} ${APP_DESCRIPTION} ${APP_AUTHOR} ${APP_ICON})
+    endif()
+    __add_ncch_banner(${target_we}.bnr ${IMAGE} ${SOUND})
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.cci
+                        COMMAND ${STRIP} -o $<TARGET_FILE:${target}>-stripped $<TARGET_FILE:${target}>
+                        COMMAND ${MAKEROM}     -f cci
+                                            -target t
+                                            -exefslogo
+                                            -o ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.cci
+                                            -elf $<TARGET_FILE:${target}>-stripped
+                                            -rsf ${RSF}
+                                            -banner ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.bnr
+                                            -icon ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.smdh
+                        DEPENDS ${target} ${RSF} ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.bnr ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.smdh
+                        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+                        VERBATIM
+    )
+
+    add_custom_target(${target_we}_cci ALL SOURCES ${CMAKE_CURRENT_BINARY_DIR}/${target_we}.cci)
     set_target_properties(${target} PROPERTIES LINK_FLAGS "-specs=3dsx.specs")
 endfunction()
 
