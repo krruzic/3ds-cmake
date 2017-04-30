@@ -427,6 +427,10 @@ Same as add_3dsx_target but for CIA files.
 * IMAGE is either a .png or a cgfximage file.
 * SOUND is either a .wav or a cwavaudio file.
 
+### add_cci_target(target RSF IMAGE SOUND [APP_TITLE APP_DESCRIPTION APP_AUTHOR [APP_ICON]])
+
+Same as add_cia_target but for CCI files.
+
 ### add_netload_target(name target_or_file)
 
 Adds a target `name` that sends a .3dsx using the homebrew launcher netload
