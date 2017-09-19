@@ -7,11 +7,8 @@
 # Unless we are unable to find FREETYPE or SF2D
 # It also adds an imported target named `3ds::sftd`, Linking against it is
 # equivalent to:
-# target_link_libraries(mytarget ${SFTD_LIBRARY})
+# target_link_libraries(mytarget ${SFTD_LIBRARIES})
 # target_include_directories(mytarget PRIVATE ${SFTD_INCLUDE_DIRS})
-# NOTE: You will have to additionally link against `3ds::freetype`, `3ds::zlib`,
-# `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
-
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
@@ -56,4 +53,4 @@ set(SFTD_PROCESS_LIBS SFTD_LIBRARY)
 
 libfind_process(SFTD)
 
-try_add_imported_target(SFTD)
+try_add_imported_target(SFTD 3ds::freetype 3ds::sf2d)

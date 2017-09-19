@@ -7,9 +7,8 @@
 # Unless we are unable to find ZLIB
 # It also adds an imported target named `3ds::png`, Linking against it is
 # equivalent to:
-# target_link_libraries(mytarget ${PNG_LIBRARY})
+# target_link_libraries(mytarget ${PNG_LIBRARIES})
 # target_include_directories(mytarget PRIVATE ${PNG_INCLUDE_DIRS})
-# NOTE: You will have to additionally link against `m` and `3ds::zlib`.
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
@@ -58,4 +57,4 @@ set(PNG_PROCESS_LIBS PNG_LIBRARY LIBM_LIBRARY)
 
 libfind_process(PNG)
 
-try_add_imported_target(PNG)
+try_add_imported_target(PNG m 3ds::zlib)

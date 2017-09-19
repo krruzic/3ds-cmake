@@ -103,8 +103,7 @@ If CITRO3D is found it will set the following:
   * `CITRO3D_LIBRARIES` - the necessary libraries to link against to use CITRO3D (including CTRULIB).
   * `CITRO3D_INCLUDE_DIRS` - the necessary include directories to use CITRO3D (including CTRULIB).
   * It will also add an imported target named `3ds::citro3d`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::ctrulib`.
+    + This automatically links against `3ds::ctrulib` and `m` as well.
 
 Examples of linking against CITRO3D:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -121,7 +120,7 @@ Examples of linking against CITRO3D:
   ```cmake
   find_package(CITRO3D REQUIRED)
 
-  target_link_libraries(mytarget 3ds::citro3d 3ds::ctrulib)
+  target_link_libraries(mytarget 3ds::citro3d)
   ```
 
 ## FindSF2D.cmake
@@ -140,8 +139,7 @@ If SF2D is found it will set the following:
   * `SF2D_LIBRARIES` - the necessary libraries to link against to use SF2D (including CITRO3D etc.).
   * `SF2D_INCLUDE_DIRS` - the necessary include directories to use SF2D (including CITRO3D etc.).
   * It will also add an imported target named `3ds::sf2d`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::citro3d` and `3ds::ctrulib`.
+    + This automatically links against `3ds::citro3d` as well.
 
 Examples of linking against SF2D:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -158,7 +156,7 @@ Examples of linking against SF2D:
   ```cmake
   find_package(SF2D REQUIRED)
 
-  target_link_libraries(mytarget 3ds::sf2d 3ds::citro3d 3ds::ctrulib)
+  target_link_libraries(mytarget 3ds::sf2d)
   ```
 
 
@@ -179,8 +177,7 @@ If SFTD is found it will set the following:
   * `SFTD_LIBRARIES` - the necessary libraries to link against to use SFTD (including Freetype and SF2D etc.).
   * `SFTD_INCLUDE_DIRS` - the necessary include directories to use SFTD (including Freetype and SF2D etc.).
   * It will also add an imported target named `3ds::sftd`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::freetype`, `3ds::zlib`, `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
+    + This automatically links against `3ds::freetype` and `3ds::sf2d` as well.
 
 Examples of linking against SFTD:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -197,8 +194,7 @@ Examples of linking against SFTD:
   ```cmake
   find_package(SFTD REQUIRED)
 
-  target_link_libraries(mytarget 3ds::sftd 3ds::freetype 3ds::zlib
-                                 3ds::sf2d 3ds::citro3d 3ds::ctrulib)
+  target_link_libraries(mytarget 3ds::sftd)
   ```
 
 ## FindSFIL.cmake
@@ -219,8 +215,7 @@ If SFIL is found it will set the following:
   * `SFIL_LIBRARIES` - the necessary libraries to link against to use SFIL (including PNG, JPEG and SF2D etc.).
   * `SFIL_INCLUDE_DIRS` - the necessary include directories to use SFIL (including PNG, JPEG and SF2D etc.).
   * It will also add an imported target named `3ds::sfil`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::png`, `m`, `3ds::zlib`, `3ds::jpeg`, `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
+    + This automatically links against `3ds::png`, `3ds::jpeg` and `3ds::sf2d` as well.
 
 Examples of linking against SFIL:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -237,8 +232,7 @@ Examples of linking against SFIL:
   ```cmake
   find_package(SFIL REQUIRED)
 
-  target_link_libraries(mytarget 3ds::sfil 3ds::png m 3ds::zlib 3ds::jpeg
-                                 3ds::sf2d 3ds::citro3d 3ds::ctrulib)
+  target_link_libraries(mytarget 3ds::sfil)
   ```
 
 ## FindZLIB.cmake
@@ -293,8 +287,7 @@ If PNG is found it will set the following:
   * `PNG_LIBRARIES` - the necessary libraries to link against to use PNG (including ZLIB).
   * `PNG_INCLUDE_DIRS` - the necessary include directories to use PNG (including ZLIB).
   * It will also add an imported target named `3ds::png`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::zlib` and `m`.
+    + This automatically links against `3ds::zlib` and `m` as well.
 
 Examples of linking against PNG:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -311,7 +304,7 @@ Examples of linking against PNG:
   ```cmake
   find_package(PNG REQUIRED)
 
-  target_link_libraries(mytarget 3ds::png 3ds::zlib m)
+  target_link_libraries(mytarget 3ds::png)
   ```
 
 ## FindJPEG.cmake
@@ -366,8 +359,7 @@ If Freetype is found it will set the following:
   * `Freetype_LIBRARIES` - the necessary libraries to link against to use Freetype (including ZLIB).
   * `Freetype_INCLUDE_DIRS` - the necessary include directories to use Freetype (including ZLIB).
   * It will also add an imported target named `3ds::freetype`.
-    + A caveat of imported targets is that you will have to also link against
-    `3ds::zlib`.
+    + This automatically links against `3ds::zlib` as well.
 
 Examples of linking against Freetype:
   * Using `_LIBRARIES` and `_INCLUDE_DIRS`:
@@ -384,7 +376,7 @@ Examples of linking against Freetype:
   ```cmake
   find_package(Freetype REQUIRED)
 
-  target_link_libraries(mytarget 3ds::freetype 3ds::zlib)
+  target_link_libraries(mytarget 3ds::freetype)
   ```
 
 ## Tools3DS.cmake
@@ -508,7 +500,7 @@ target_link_libraries(target tempbinlib)
 
 ```cmake
 cmake_minimum_required(VERSION 2.8)
-project(videoPlayer C CXX ASM)
+project(hello_cmake C CXX ASM)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 include(Tools3DS)

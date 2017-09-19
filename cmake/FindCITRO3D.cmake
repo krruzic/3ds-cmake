@@ -7,9 +7,8 @@
 # Unless we are unable to find CTRULIB
 # It also adds an imported target named `3ds::citro3d`, Linking against it is
 # equivalent to:
-# target_link_libraries(mytarget ${CITRO3D_LIBRARY})
+# target_link_libraries(mytarget ${CITRO3D_LIBRARIES})
 # target_include_directories(mytarget PRIVATE ${CITRO3D_INCLUDE_DIRS})
-# NOTE: You will have to additionally link against `3ds::ctrulib`.
 
 if(NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
@@ -48,9 +47,15 @@ foreach(search ${_CITRO3D_SEARCHES})
     PATH_SUFFIXES lib)
 endforeach()
 
+#find_library(LIBM_LIBRARY NAMES m libm.a
+#  PATHS / /arm-none-eabi
+#  PATH_SUFFIXES lib/armv6k/fpu)
+
+set(LIBM_LIBRARY m)
+
 set(CITRO3D_PROCESS_INCLUDES CITRO3D_INCLUDE_DIR)
-set(CITRO3D_PROCESS_LIBS CITRO3D_LIBRARY)
+set(CITRO3D_PROCESS_LIBS CITRO3D_LIBRARY LIBM_LIBRARY)
 
 libfind_process(CITRO3D)
 
-try_add_imported_target(CITRO3D)
+try_add_imported_target(CITRO3D m 3ds::ctrulib)

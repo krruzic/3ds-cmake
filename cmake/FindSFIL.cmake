@@ -7,10 +7,8 @@
 # Unless we are unable to find JPEG, PNG or SF2D
 # It also adds an imported target named `3ds::sfil`, Linking against it is
 # equivalent to:
-# target_link_libraries(mytarget ${SFIL_LIBRARY})
+# target_link_libraries(mytarget ${SFIL_LIBRARIES})
 # target_include_directories(mytarget PRIVATE ${SFIL_INCLUDE_DIRS})
-# NOTE: You will have to additionally link against `3ds::png`, `m`, `3ds::zlib`,
-# `3ds::jpeg`, `3ds::sf2d`, `3ds::citro3d` and `3ds::ctrulib`.
 
 
 if(NOT 3DS)
@@ -57,4 +55,4 @@ set(SFIL_PROCESS_LIBS SFIL_LIBRARY)
 
 libfind_process(SFIL)
 
-try_add_imported_target(SFIL)
+try_add_imported_target(SFIL 3ds::jpeg 3ds::png 3ds::sf2d)
