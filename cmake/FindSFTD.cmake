@@ -10,9 +10,9 @@
 # target_link_libraries(mytarget ${SFTD_LIBRARIES})
 # target_include_directories(mytarget PRIVATE ${SFTD_INCLUDE_DIRS})
 
-if(NOT 3DS)
+if (NOT 3DS)
     message(FATAL_ERROR "This module can only be used if you are using the 3DS toolchain file. Please erase this build directory or create another one, and then use -DCMAKE_TOOLCHAIN_FILE=DevkitArm3DS.cmake when calling cmake for the 1st time. For more information, see the Readme.md for more information.")
-endif()
+endif ()
 
 include(LibFindMacros)
 include(try_add_imported_target)
@@ -24,29 +24,29 @@ libfind_package(SFTD SF2D)
 set(_SFTD_SEARCHES)
 
 # Search SFTD_ROOT first if it is set.
-if(SFTD_ROOT)
-  set(_SFTD_SEARCH_ROOT
-    PATHS ${SFTD_ROOT}
-    NO_DEFAULT_PATH
-    NO_CMAKE_FIND_ROOT_PATH)
-  list(APPEND _SFTD_SEARCHES _SFTD_SEARCH_ROOT)
-endif()
+if (SFTD_ROOT)
+    set(_SFTD_SEARCH_ROOT
+            PATHS ${SFTD_ROOT}
+            NO_DEFAULT_PATH
+            NO_CMAKE_FIND_ROOT_PATH)
+    list(APPEND _SFTD_SEARCHES _SFTD_SEARCH_ROOT)
+endif ()
 
 # Search below ${DEVKITPRO}, ${DEVKITARM} etc.
 set(_SFTD_SEARCH_NORMAL
-  PATHS / /libsftd /sftdlib /libctru /ctrulib
-  NO_DEFAULT_PATH
-  ONLY_CMAKE_FIND_ROOT_PATH)
+        PATHS / /libsftd /sftdlib /libctru /ctrulib
+        NO_DEFAULT_PATH
+        ONLY_CMAKE_FIND_ROOT_PATH)
 list(APPEND _SFTD_SEARCHES _SFTD_SEARCH_NORMAL)
 
-foreach(search ${_SFTD_SEARCHES})
-  find_path(SFTD_INCLUDE_DIR NAMES sftd.h
-    ${${search}}
-    PATH_SUFFIXES include libsftd/include)
-  find_library(SFTD_LIBRARY NAMES sftd libsftd.a
-    ${${search}}
-    PATH_SUFFIXES lib libsftd/lib)
-endforeach()
+foreach (search ${_SFTD_SEARCHES})
+    find_path(SFTD_INCLUDE_DIR NAMES sftd.h
+            ${${search}}
+            PATH_SUFFIXES include libsftd/include)
+    find_library(SFTD_LIBRARY NAMES sftd libsftd.a
+            ${${search}}
+            PATH_SUFFIXES lib libsftd/lib)
+endforeach ()
 
 set(SFTD_PROCESS_INCLUDES SFTD_INCLUDE_DIR)
 set(SFTD_PROCESS_LIBS SFTD_LIBRARY)

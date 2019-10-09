@@ -576,4 +576,46 @@ target_maxmod_file(hello_world.elf ${MUSIC_FILES})
 file(GLOB_RECURSE DATA_FILES
 	./data/*.bin
 )
-``` 
+```
+
+# Example using SDL1.2 to build a crossplatform game
+```cmake
+cmake_minimum_required(VERSION 3.8)
+set(CMAKE_CXX_STANDARD 11)
+project(mygame)
+# Add the cmake folder to the modules paths, so that we can use the tools and find_package for ctrulib
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
+include_directories(examples_3ds/sdlgame)
+file(GLOB GAME_SOURCE_FILES examples_3ds/sdl_game/*.cpp)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
+
+# you need to set CMAKE_TOOLCHAIN_FILE=DevkitArm3DS
+message("Using toolchain file: ${CMAKE_TOOLCHAIN_FILE}.")
+if (${3DS}) # set 3DS=1 as an env var
+    enable_language(ASM) # ASM must be enabled for add_shbin_library
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${DKA_SUGGESTED_C_FLAGS}") # Use the devkitArm suggested flags. This is not mandatory.
+    # Note that you must copy the cmake folder and the DevkitArm3DS.cmake file in this directory
+    include(Tools3DS) # Include all the macros and tools needed for 3ds development.
+    find_package(CTRULIB REQUIRED) # Look for ctrulib
+    find_package(SDL REQUIRED) # Look for sdl
+    add_executable(${PROJECT_NAME} ${GAME_SOURCE_FILES})
+    add_3dsx_target(${PROJECT_NAME})
+    add_cia_target(${PROJECT_NAME} res/app/cia.rsf res/app/banner.png res/app/banner.wav)
+
+    target_link_libraries(${PROJECT_NAME}
+            3ds::sdl_mixer 3ds::sdl_ttf 3ds::freetype
+            3ds::sdl_img 3ds::sdl
+            3ds::png 3ds::jpeg 3ds::bzip2
+            3ds::zlib 3ds::citro3d 3ds::ctrulib m)
+
+    add_custom_command(TARGET ${PROJECT_NAME}_3dsx POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_NAME}.3dsx ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+    add_custom_command(TARGET ${PROJECT_NAME}_cia POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_NAME}.cia ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+else ()
+    message("Compiling for host")
+    add_executable(${PROJECT_NAME}_native ${GAME_SOURCE_FILES})
+    target_link_libraries(${PROJECT_NAME}_native SDL_mixer SDL_ttf SDL_image SDL)
+endif ()
+```
+kk
